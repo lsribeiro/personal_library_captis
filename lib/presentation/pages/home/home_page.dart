@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_library_captis/presentation/pages/search/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -43,8 +44,20 @@ class _HomePageState extends State<HomePage> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
-        onTap: (index) {},
+        onTap: _navigateTo,
       ),
     );
+  }
+
+  void _navigateTo(index) {
+    switch (index) {
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const SearchPage(),
+          ),
+        );
+    }
   }
 }
