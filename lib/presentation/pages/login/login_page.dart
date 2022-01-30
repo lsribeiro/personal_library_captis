@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_library_captis/presentation/pages/home/home_page.dart';
 import 'package:personal_library_captis/presentation/widgets/login/login_text_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,7 +23,14 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 10.0,),
               LoginTextField(hintText: "Password", icon: Icons.lock, obscureText: true,),
               SizedBox(height: 10.0,),
-              MaterialButton(onPressed: () => print('Login'), child: Text("LOGIN"), color: Colors.white,)
+              MaterialButton(onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              }, child: Text("LOGIN"), color: Colors.white,)
             ],
           ),
         ),
