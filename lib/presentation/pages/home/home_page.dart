@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:personal_library_captis/presentation/pages/search/search_page.dart';
+import 'package:personal_library_captis/presentation/widgets/bottom_navigation/bottom_navigation_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Home Page"),
       ),
       body: ListView(
@@ -31,33 +32,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-        ],
+      bottomNavigationBar: BottomNavigationWidget(
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _navigateTo,
       ),
     );
-  }
-
-  void _navigateTo(index) {
-    switch (index) {
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const SearchPage(),
-          ),
-        );
-    }
   }
 }
