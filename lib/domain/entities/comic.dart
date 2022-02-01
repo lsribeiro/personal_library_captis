@@ -5,12 +5,12 @@ class Comic {
   String thumbnail;
   String title;
   Individual creator;
-  String description;
+  String? description;
   String isbn;
-  String pageNumber;
+  int pageCount;
   String series;
   List<Individual> characters;
-  List<ComicList> lists;
+  List<ComicList>? lists;
   List<String>? imageGallery;
 
 //<editor-fold desc="Data Methods">
@@ -19,12 +19,12 @@ class Comic {
     required this.thumbnail,
     required this.title,
     required this.creator,
-    required this.description,
+    this.description,
     required this.isbn,
-    required this.pageNumber,
+    required this.pageCount,
     required this.series,
     required this.characters,
-    required this.lists,
+    this.lists,
     this.imageGallery,
   });
 
@@ -38,7 +38,7 @@ class Comic {
           creator == other.creator &&
           description == other.description &&
           isbn == other.isbn &&
-          pageNumber == other.pageNumber &&
+          pageCount == other.pageCount &&
           series == other.series &&
           characters == other.characters &&
           lists == other.lists &&
@@ -51,7 +51,7 @@ class Comic {
       creator.hashCode ^
       description.hashCode ^
       isbn.hashCode ^
-      pageNumber.hashCode ^
+      pageCount.hashCode ^
       series.hashCode ^
       characters.hashCode ^
       lists.hashCode ^
@@ -65,7 +65,7 @@ class Comic {
         ' creator: $creator,' +
         ' description: $description,' +
         ' isbn: $isbn,' +
-        ' pageNumber: $pageNumber,' +
+        ' pageCount: $pageCount,' +
         ' series: $series,' +
         ' characters: $characters,' +
         ' lists: $lists,' +
@@ -79,7 +79,7 @@ class Comic {
     Individual? creator,
     String? description,
     String? isbn,
-    String? pageNumber,
+    int? pageCount,
     String? series,
     List<Individual>? characters,
     List<ComicList>? lists,
@@ -91,7 +91,7 @@ class Comic {
       creator: creator ?? this.creator,
       description: description ?? this.description,
       isbn: isbn ?? this.isbn,
-      pageNumber: pageNumber ?? this.pageNumber,
+      pageCount: pageCount ?? this.pageCount,
       series: series ?? this.series,
       characters: characters ?? this.characters,
       lists: lists ?? this.lists,
@@ -106,7 +106,7 @@ class Comic {
       'creator': this.creator,
       'description': this.description,
       'isbn': this.isbn,
-      'pageNumber': this.pageNumber,
+      'pageCount': this.pageCount,
       'series': this.series,
       'characters': this.characters,
       'lists': this.lists,
@@ -116,16 +116,19 @@ class Comic {
 
   factory Comic.fromMap(Map<String, dynamic> map) {
     return Comic(
-      thumbnail: map['thumbnail'] as String,
+      thumbnail: "${map['thumbnail']['path']}${map['thumbnail']['ext']}",
       title: map['title'] as String,
-      creator: map['creator'] as Individual,
-      description: map['description'] as String,
+      // creator: Individual.fromMap(map['creator']),
+      creator: Individual(name: '', thumbnail: '', numberOfComics: 10, quantityOfListsIncluded: 10),
+      description: map['description'],
       isbn: map['isbn'] as String,
-      pageNumber: map['pageNumber'] as String,
-      series: map['series'] as String,
-      characters: map['characters'] as List<Individual>,
-      lists: map['lists'] as List<ComicList>,
-      imageGallery: map['imageGallery'] as List<String>,
+      pageCount: map['pageCount'] as int,
+      series: map['series']['name'] as String,
+      // characters: map['characters'] as List<Individual>,
+      characters: [],
+      // lists: map['lists'] as List<ComicList>,
+      // imageGallery: map['images'] as List<String>,
+      imageGallery: [],
     );
   }
 

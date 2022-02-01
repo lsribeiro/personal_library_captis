@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:personal_library_captis/presentation/pages/login/login_page.dart';
+import 'core/di/injection_container.dart' as di;
 
 void main() {
+  di.init();
   runApp(MyApp());
 }
 

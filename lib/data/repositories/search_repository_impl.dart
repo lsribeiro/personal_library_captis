@@ -1,5 +1,5 @@
 import 'package:personal_library_captis/data/data_sources/remote/search_data_source.dart';
-import 'package:personal_library_captis/domain/entities/comic_list.dart';
+import 'package:personal_library_captis/domain/entities/comic.dart';
 import 'package:personal_library_captis/domain/entities/individual.dart';
 import 'package:personal_library_captis/domain/repositories/search_repository.dart';
 
@@ -9,12 +9,21 @@ class SearchRepositoryImpl implements SearchRepository {
   SearchRepositoryImpl(this._remote);
 
   @override
-  Future<List<ComicList>> searchComics(String? searchText) async {
+  Future<List<Comic>> searchComics(String? searchText) async {
     final queryResult = await _remote.searchComics(searchText);
 
-    return Future.delayed(Duration.zero, () {
-      return [];
+    final results = queryResult["data"]["results"];
+
+    final comicsResult = <Comic>[];
+
+    results.forEach((element) {
+      final comic = Comic.fromMap(element);
+      comicsResult.add(comic);
     });
+
+
+    Future.delayed(Duration.zero);
+    return comicsResult;
   }
 
   @override

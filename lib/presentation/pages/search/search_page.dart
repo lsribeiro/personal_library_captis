@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_library_captis/domain/constants/search_types.dart';
+import 'package:personal_library_captis/domain/entities/comic.dart';
 import 'package:personal_library_captis/presentation/pages/search/search_cubit.dart';
 import 'package:personal_library_captis/presentation/widgets/bottom_navigation/bottom_navigation_widget.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SearchCubit(),
+      child: SearchView(),
+    );
+  }
 }
 
-class _SearchPageState extends State<SearchPage> {
+class SearchView extends StatefulWidget {
+  const SearchView({Key? key}) : super(key: key);
+
+  @override
+  _SearchViewState createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
   final int _selectedIndex = 1;
 
   @override
@@ -30,9 +43,15 @@ class _SearchPageState extends State<SearchPage> {
               child: TextField(
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
-                  suffixIcon: InkWell(
-                    onTap: () => print("Search"),
-                    child: Icon(Icons.search, color: Colors.grey),
+                  suffixIcon: BlocBuilder<SearchCubit, SearchState>(
+                    builder: (BuildContext context, state) {
+                      return InkWell(
+                        onTap: () {
+                          context.read<SearchCubit>().executeQuery();
+                        },
+                        child: Icon(Icons.search, color: Colors.grey),
+                      );
+                    },
                   ),
                   hintText: "Search",
                   hintStyle: TextStyle(color: Colors.grey),
@@ -46,39 +65,21 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             searchOptionBar,
-            Expanded(
-              child: GridView.count(
-                childAspectRatio: 300 / 450,
-                // childAspectRatio: itemWidth / itemHeight,
-                // Create a grid with 2 columns. If you change the scrollDirection to
-                // horizontal, this produces 2 rows.
-                crossAxisCount: 2,
-                // Generate 100 widgets that display their index in the List.
-                children: List.generate(100, (index) {
-                  return Card(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_uncanny.jpg"),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 50,
-                          child: Text("Spider-Man"),
-                        )
-                      ],
-                    ),
-                  );
-                }),
-              ),
-            ),
+            Expanded(child: BlocBuilder<SearchCubit, SearchState>(
+              builder: (context, state) {
+                print("state");
+                print(state);
+                return GridView.count(
+                  childAspectRatio: 300 / 450,
+                  // childAspectRatio: itemWidth / itemHeight,
+                  // Create a grid with 2 columns. If you change the scrollDirection to
+                  // horizontal, this produces 2 rows.
+                  crossAxisCount: 2,
+                  // Generate 100 widgets that display their index in the List.
+                  children: buildSearchCards(state.searchResults),
+                );
+              },
+            )),
           ],
         ),
         bottomNavigationBar: BottomNavigationWidget(
@@ -97,6 +98,41 @@ class _SearchPageState extends State<SearchPage> {
         searchOption("Creators", SearchTypes.creators),
       ],
     );
+  }
+
+  Widget comicCard(Comic comic) {
+    return Card(
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                      "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_uncanny.jpg"),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 50,
+            child: Text(comic.title),
+          )
+        ],
+      ),
+    );
+  }
+
+  List<Widget> buildSearchCards(List<dynamic> searchResults) {
+    final widgets = <Widget>[];
+    searchResults.forEach((element) {
+      if (element is Comic) {
+        widgets.add(comicCard(element));
+      }
+    });
+
+    return widgets;
   }
 
   Widget searchOption(String text, SearchTypes option) {

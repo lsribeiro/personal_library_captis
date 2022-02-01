@@ -12,6 +12,7 @@ class SearchState extends Equatable {
         isComicsSelected,
         isCharactersSelected,
         isCreatorsSelected,
+        searchResults,
       ];
 
   SearchState({
@@ -19,7 +20,7 @@ class SearchState extends Equatable {
     this.isCharactersSelected = false,
     this.isCreatorsSelected = false,
     required this.searchResults,
-  });
+  }) : super();
 
   bool getSearchOptionValue(SearchTypes option) {
     switch (option) {
