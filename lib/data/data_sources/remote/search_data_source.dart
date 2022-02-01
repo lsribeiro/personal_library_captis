@@ -11,15 +11,27 @@ class SearchDataSource {
   }
 
   Future<Map<String, dynamic>> searchCharacters(String? searchText) async {
-    final response = await fetchData("characters?titleStartsWith=$searchText");
+    final response = await fetchData("characters?nameStartsWith=$searchText");
 
     return response.data;
   }
 
-  Future<Map<String, dynamic>> searchCreators(String? searchText) async {
-    final response = await fetchData("creators?titleStartsWith=$searchText");
+  Future<List<Map<String, dynamic>>> searchCreators(String? searchText) async {
+    final futures = <Future>[];
+    futures.add(fetchData("creators?nameStartsWith=$searchText"));
+    futures.add(fetchData("creators?firstNameStartsWith=$searchText"));
+    futures.add(fetchData("creators?middleNameStartsWith=$searchText"));
+    futures.add(fetchData("creators?lastNameStartsWith=$searchText"));
 
-    return response.data;
+    final creatorsData = <Map<String, dynamic>>[];
+
+    final futuresResult = await Future.wait(futures);
+
+    futuresResult.forEach((element) {
+      creatorsData.add(element.data);
+    });
+
+    return creatorsData;
   }
 
   Future<Response<dynamic>> fetchData(String queryPath) async {

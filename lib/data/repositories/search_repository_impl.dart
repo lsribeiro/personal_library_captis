@@ -21,8 +21,6 @@ class SearchRepositoryImpl implements SearchRepository {
       comicsResult.add(comic);
     });
 
-
-    Future.delayed(Duration.zero);
     return comicsResult;
   }
 
@@ -30,17 +28,38 @@ class SearchRepositoryImpl implements SearchRepository {
   Future<List<Individual>> searchCharacters(String? searchText) async {
     final queryResult = await _remote.searchCharacters(searchText);
 
-    return Future.delayed(Duration.zero, () {
-      return [];
+    final results = queryResult["data"]["results"];
+
+    final charactersResult = <Individual>[];
+
+    results.forEach((element) {
+      final character = Individual.fromMap(element);
+      charactersResult.add(character);
     });
+
+    return charactersResult;
   }
 
   @override
   Future<List<Individual>> searchCreators(String? searchText) async {
-    final queryResult = await _remote.searchCreators(searchText);
+    final queryResults = await _remote.searchCreators(searchText);
 
-    return Future.delayed(Duration.zero, () {
-      return [];
+    final creatorsResult = <Individual>[];
+
+    print("Search creators");
+    print("Query Results");
+
+    queryResults.forEach((element) {
+      final result = element["data"]["results"];
+      result.forEach((e) {
+        final creator = Individual.fromMap(e);
+        print(creator);
+        creatorsResult.add(creator);
+      });
     });
+
+    print(creatorsResult.length);
+
+    return creatorsResult;
   }
 }

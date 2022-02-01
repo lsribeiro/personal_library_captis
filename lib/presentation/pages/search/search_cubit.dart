@@ -32,25 +32,18 @@ class SearchCubit extends Cubit<SearchState> {
     }
 
     if (state.isCreatorsSelected) {
-      futures.add(_searchCreatorsUseCase.call("spider"));
+      futures.add(_searchCreatorsUseCase.call("lee"));
     }
 
-    await Future.wait(futures).then((value) {
-      value.forEach((element) {
-        element.forEach((e) {
-          _searchResults.add(e);
-        });
-        // _searchResults.addAll(element);
+    final futuresResult = await Future.wait(futures);
+
+    futuresResult.forEach((element) {
+      element.forEach((e) {
+        _searchResults.add(e);
       });
     });
 
-    print(_searchResults.length);
-
     emit(state.copyWith(searchResults: _searchResults));
-
-    print(state.searchResults);
-
-    print("State search_cubit.dart");
   }
 
   void toggleSearchOption(SearchTypes option) {

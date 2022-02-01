@@ -1,16 +1,16 @@
 class Individual {
-  String thumbnail;
+  String? thumbnail;
   String name;
-  int numberOfComics;
-  int quantityOfListsIncluded;
+  int? numberOfComics;
+  int? quantityOfListsIncluded;
 
 //<editor-fold desc="Data Methods">
 
   Individual({
-    required this.thumbnail,
+    this.thumbnail,
     required this.name,
-    required this.numberOfComics,
-    required this.quantityOfListsIncluded,
+    this.numberOfComics,
+    this.quantityOfListsIncluded,
   });
 
   @override
@@ -64,11 +64,16 @@ class Individual {
   }
 
   factory Individual.fromMap(Map<String, dynamic> map) {
+    var name = "";
+
+    if (map['name'] != null) name = map['name'];
+    if (map['firstName'] != null) name = "${map['firstName']} ${map['middleName']} ${map['lastName']}";
+
     return Individual(
-      thumbnail: map['thumbnail'] as String,
-      name: map['name'] as String,
-      numberOfComics: map['numberOfComics'] as int,
-      quantityOfListsIncluded: map['quantityOfListsIncluded'] as int,
+      thumbnail: "${map['thumbnail']['path']}.${map['thumbnail']['extension']}",
+      name: name,
+      numberOfComics: map['numberOfComics'] ?? 0,
+      // quantityOfListsIncluded: map['quantityOfListsIncluded'] as int,
     );
   }
 

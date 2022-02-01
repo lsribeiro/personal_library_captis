@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_library_captis/domain/constants/search_types.dart';
 import 'package:personal_library_captis/domain/entities/comic.dart';
+import 'package:personal_library_captis/domain/entities/individual.dart';
 import 'package:personal_library_captis/presentation/pages/search/search_cubit.dart';
 import 'package:personal_library_captis/presentation/widgets/bottom_navigation/bottom_navigation_widget.dart';
 
@@ -67,11 +68,8 @@ class _SearchViewState extends State<SearchView> {
             searchOptionBar,
             Expanded(child: BlocBuilder<SearchCubit, SearchState>(
               builder: (context, state) {
-                print("state");
-                print(state);
                 return GridView.count(
                   childAspectRatio: 300 / 450,
-                  // childAspectRatio: itemWidth / itemHeight,
                   // Create a grid with 2 columns. If you change the scrollDirection to
                   // horizontal, this produces 2 rows.
                   crossAxisCount: 2,
@@ -109,8 +107,7 @@ class _SearchViewState extends State<SearchView> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(
-                      "http://i.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_uncanny.jpg"),
+                  image: NetworkImage(comic.thumbnail),
                 ),
               ),
             ),
@@ -124,11 +121,37 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
+  Widget individualCard(Individual individual) {
+    return Card(
+      child: Column(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(individual.thumbnail),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 50,
+            child: Text(individual.name),
+          )
+        ],
+      ),
+    );
+  }
+
   List<Widget> buildSearchCards(List<dynamic> searchResults) {
     final widgets = <Widget>[];
     searchResults.forEach((element) {
       if (element is Comic) {
         widgets.add(comicCard(element));
+      }
+      if (element is Individual) {
+        widgets.add(individualCard(element));
       }
     });
 

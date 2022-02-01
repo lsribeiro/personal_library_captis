@@ -116,7 +116,7 @@ class Comic {
 
   factory Comic.fromMap(Map<String, dynamic> map) {
     return Comic(
-      thumbnail: "${map['thumbnail']['path']}${map['thumbnail']['ext']}",
+      thumbnail: "${map['thumbnail']['path']}.${map['thumbnail']['extension']}",
       title: map['title'] as String,
       // creator: Individual.fromMap(map['creator']),
       creator: Individual(name: '', thumbnail: '', numberOfComics: 10, quantityOfListsIncluded: 10),
