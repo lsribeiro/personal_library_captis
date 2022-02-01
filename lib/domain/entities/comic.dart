@@ -1,4 +1,3 @@
-import 'package:personal_library_captis/domain/entities/character.dart';
 import 'package:personal_library_captis/domain/entities/comic_list.dart';
 import 'package:personal_library_captis/domain/entities/individual.dart';
 
