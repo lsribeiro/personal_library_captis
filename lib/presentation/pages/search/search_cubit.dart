@@ -8,7 +8,7 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit()
       : super(
-          SearchState(),
+          SearchState(searchResults: []),
         );
 
   void toggleSearchOption(SearchTypes option) {
@@ -23,6 +23,10 @@ class SearchCubit extends Cubit<SearchState> {
         emit(state.copyWith(isCreatorsSelected: !state.isCreatorsSelected));
         break;
     }
+
+  }
+
+  void executeQuery() {
 
   }
 }

@@ -5,6 +5,7 @@ class SearchState extends Equatable {
   final isComicsSelected;
   final isCharactersSelected;
   final isCreatorsSelected;
+  final List<dynamic> searchResults;
 
   @override
   List<Object> get props => [
@@ -13,10 +14,11 @@ class SearchState extends Equatable {
         isCreatorsSelected,
       ];
 
-  const SearchState({
+  SearchState({
     this.isComicsSelected = false,
     this.isCharactersSelected = false,
     this.isCreatorsSelected = false,
+    required this.searchResults,
   });
 
   bool getSearchOptionValue(SearchTypes option) {
@@ -34,10 +36,13 @@ class SearchState extends Equatable {
     bool? isComicsSelected,
     bool? isCharactersSelected,
     bool? isCreatorsSelected,
+    List<dynamic>? searchResults,
   }) {
     return SearchState(
         isComicsSelected: isComicsSelected ?? this.isComicsSelected,
         isCharactersSelected: isCharactersSelected ?? this.isCharactersSelected,
-        isCreatorsSelected: isCreatorsSelected ?? this.isCreatorsSelected);
+        isCreatorsSelected: isCreatorsSelected ?? this.isCreatorsSelected,
+        searchResults: searchResults ?? this.searchResults,
+    );
   }
 }
