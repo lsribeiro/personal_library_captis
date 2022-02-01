@@ -99,16 +99,20 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget comicCard(Comic comic) {
+    final thumbnail = comic.thumbnail;
+
     return Card(
       child: Column(
         children: [
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(comic.thumbnail),
-                ),
+                image: thumbnail.isNotEmpty && !thumbnail.contains("image_not_available")
+                    ? DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(comic.thumbnail),
+                      )
+                    : null,
               ),
             ),
           ),
@@ -122,16 +126,20 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget individualCard(Individual individual) {
+    final thumbnail = individual.thumbnail ?? "";
+
     return Card(
       child: Column(
         children: [
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(individual.thumbnail),
-                ),
+                image: thumbnail.isNotEmpty && !thumbnail.contains("image_not_available")
+                    ? DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(thumbnail),
+                      )
+                    : null,
               ),
             ),
           ),
