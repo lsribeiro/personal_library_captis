@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_library_captis/core/constants/individual_type.dart';
 import 'package:personal_library_captis/domain/entities/comic.dart';
+import 'package:personal_library_captis/domain/entities/comic_list.dart';
 import 'package:personal_library_captis/domain/entities/individual.dart';
+import 'package:personal_library_captis/presentation/pages/comic_lists/comic_lists_page.dart';
 import 'package:personal_library_captis/presentation/pages/info/info_cubit.dart';
 
 class InfoPage extends StatelessWidget {
@@ -44,16 +46,24 @@ class _InfoViewState extends State<InfoView> {
         automaticallyImplyLeading: true,
         title: Text("Info Page"),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: InkWell(
-              onTap: () {},
-              child: Icon(
-                Icons.add,
-                size: 32.0,
+          if (widget.entity is Comic)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: InkWell(
+                onTap: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ComicListsPage(comic: widget.entity as Comic),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.add,
+                  size: 32.0,
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: Container(
@@ -93,5 +103,45 @@ class _InfoViewState extends State<InfoView> {
     }
 
     return SizedBox.shrink();
+  }
+
+  Future<void> _showSelectComicListsDialog(
+    BuildContext _context,
+    List<ComicList>? lists,
+    List<bool>? checkedLists,
+    void Function(List<ComicList>) addComicToComicLists,
+    void Function(int) checkComic,
+  ) {
+    InfoCubit infoCubit = BlocProvider.of<InfoCubit>(context);
+    return showDialog<void>(
+      context: _context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        final dialog = SimpleDialog(
+          title: Text("Comic Lists"),
+          children: [
+            // comicListView(infoCubit.state.lists, infoCubit.state.checkedLists),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                MaterialButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Cancel"),
+                ),
+                MaterialButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Add"),
+                ),
+              ],
+            )
+          ],
+        );
+
+        return BlocProvider<InfoCubit>.value(
+          value: infoCubit,
+          child: dialog,
+        );
+      },
+    );
   }
 }

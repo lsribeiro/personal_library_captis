@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:personal_library_captis/domain/entities/comic.dart';
+import 'package:personal_library_captis/domain/entities/comic_list.dart';
 import 'package:personal_library_captis/presentation/pages/login/login_page.dart';
 import 'core/di/injection_container.dart' as di;
 
 void main() async {
   di.init();
   await Hive.initFlutter();
+  Hive.registerAdapter(ComicListAdapter());
+  Hive.registerAdapter(ComicAdapter());
   runApp(MyApp());
 }
 

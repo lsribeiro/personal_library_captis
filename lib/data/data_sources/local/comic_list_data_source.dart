@@ -13,9 +13,7 @@ class ComicListDataSource {
 
   // get comics from comic list
 
-  ComicListDataSource() {
-    Hive.registerAdapter(ComicListAdapter());
-  }
+  ComicListDataSource();
 
   Future<dynamic> getComicLists() async {
     // TODO: Turn into constant
@@ -28,6 +26,14 @@ class ComicListDataSource {
     final box = Hive.box("comic_lists");
 
     await box.add(comicList);
+
+    return box.values;
+  }
+
+  Future<dynamic> updateComicList(int index, ComicList comicList) async {
+    final box = Hive.box("comic_lists");
+
+    await box.putAt(index, comicList);
 
     return box.values;
   }

@@ -33,4 +33,17 @@ class ComicListRepositoryImpl implements ComicListRepository {
     return [];
   }
 
+  @override
+  Future<List<ComicList>> updateComicList(int index, ComicList comicList) async {
+    final result = await _local.updateComicList(index, comicList);
+
+    if (result != null) {
+      final comicList = <ComicList>[];
+      result.forEach((e) => comicList.add(e as ComicList));
+      return comicList;
+    }
+
+    return [];
+  }
+
 }

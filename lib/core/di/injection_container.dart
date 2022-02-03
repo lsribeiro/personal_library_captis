@@ -12,6 +12,7 @@ import 'package:personal_library_captis/domain/usecases/auth/sign_in_use_case.da
 import 'package:personal_library_captis/domain/usecases/auth/sign_out_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/comcic_list/create_comic_list_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/comcic_list/get_comic_lists_use_case.dart';
+import 'package:personal_library_captis/domain/usecases/comcic_list/update_comic_list_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/info/get_character_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/info/get_comic_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/info/get_creator_use_case.dart';
@@ -36,6 +37,7 @@ void init() {
   sl.registerLazySingleton(() => GetComicUseCase(sl()));
   sl.registerLazySingleton(() => GetCharacterUseCase(sl()));
   sl.registerLazySingleton(() => GetCreatorUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateComicListUseCase(sl()));
 
   sl.registerLazySingleton<SearchRepositoryImpl>(
     () => SearchRepositoryImpl(sl()),

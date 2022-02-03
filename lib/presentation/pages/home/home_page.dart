@@ -39,11 +39,13 @@ class _HomeViewState extends State<HomeView> {
         automaticallyImplyLeading: false,
         title: Text("Home Page"),
       ),
-      body: BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-        return ListView(
-          children: comicListWidget(state.lists),
-        );
-      },),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          return ListView(
+            children: comicListWidget(state.lists),
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showCreateComicListDialog(context, (name) {
@@ -61,12 +63,16 @@ class _HomeViewState extends State<HomeView> {
   List<Widget> comicListWidget(List<ComicList> comicList) {
     final widgetList = <Widget>[];
 
-
     comicList.forEach((e) {
       final childrenList = <Widget>[];
 
       e.comics.forEach((element) {
-        childrenList.add(ListTile(leading: Icon(Icons.book), title: Text(""),),);
+        childrenList.add(
+          ListTile(
+            leading: Icon(Icons.book),
+            title: Text(element.title),
+          ),
+        );
       });
 
       widgetList.add(
@@ -81,8 +87,8 @@ class _HomeViewState extends State<HomeView> {
     return widgetList;
   }
 
-  static Future<void> _showCreateComicListDialog(BuildContext _context,
-      void Function(String) createComicList) {
+  static Future<void> _showCreateComicListDialog(
+      BuildContext _context, void Function(String) createComicList) {
     final _newComicListController = TextEditingController();
 
     return showDialog<void>(

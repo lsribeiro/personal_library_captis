@@ -28,6 +28,7 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   final int _selectedIndex = 1;
+  final _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +44,16 @@ class _SearchViewState extends State<SearchView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
               child: TextField(
+                controller: _searchController,
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   suffixIcon: BlocBuilder<SearchCubit, SearchState>(
                     builder: (BuildContext context, state) {
                       return InkWell(
                         onTap: () {
-                          context.read<SearchCubit>().executeQuery();
+                          if (_searchController.text.isNotEmpty) {
+                            context.read<SearchCubit>().executeQuery(_searchController.text);
+                          }
                         },
                         child: Icon(Icons.search, color: Colors.grey),
                       );

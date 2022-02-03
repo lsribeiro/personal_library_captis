@@ -15,7 +15,7 @@ class SearchCubit extends Cubit<SearchState> {
           SearchState(searchResults: []),
         );
 
-  void executeQuery() async {
+  void executeQuery(String searchQuery) async {
     final _searchComicsUseCase = di.sl.get<SearchComicsUseCase>();
     final _searchCharactersUseCase = di.sl.get<SearchCharactersUseCase>();
     final _searchCreatorsUseCase = di.sl.get<SearchCreatorsUseCase>();
@@ -24,15 +24,15 @@ class SearchCubit extends Cubit<SearchState> {
     final futures = <Future>[];
 
     if (state.isComicsSelected) {
-      futures.add(_searchComicsUseCase.call("spider"));
+      futures.add(_searchComicsUseCase.call(searchQuery));
     }
 
     if (state.isCharactersSelected) {
-      futures.add(_searchCharactersUseCase.call("spider"));
+      futures.add(_searchCharactersUseCase.call(searchQuery));
     }
 
     if (state.isCreatorsSelected) {
-      futures.add(_searchCreatorsUseCase.call("lee"));
+      futures.add(_searchCreatorsUseCase.call(searchQuery));
     }
 
     final futuresResult = await Future.wait(futures);

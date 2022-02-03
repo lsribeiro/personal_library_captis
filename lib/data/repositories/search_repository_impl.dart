@@ -35,7 +35,6 @@ class SearchRepositoryImpl implements SearchRepository {
 
     results.forEach((element) {
       final character = Individual.fromMap(element);
-      charactersResult.add(character);
       charactersResult.add(character.copyWith(type: IndividualType.character));
     });
 

@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:personal_library_captis/core/constants/individual_type.dart';
 import 'package:personal_library_captis/domain/entities/comic.dart';
-import 'package:personal_library_captis/domain/entities/comic_list.dart';
 import 'package:personal_library_captis/domain/entities/individual.dart';
 import 'package:personal_library_captis/core/di/injection_container.dart' as di;
 import 'package:personal_library_captis/domain/usecases/info/get_character_use_case.dart';
