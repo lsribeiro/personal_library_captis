@@ -1,6 +1,11 @@
-part of 'home_bloc.dart';
+part of 'home_cubit.dart';
 
 @immutable
-abstract class HomeState {}
+class HomeState extends Equatable {
+  final List<ComicList> lists;
 
-class HomeInitial extends HomeState {}
+  HomeState({required this.lists});
+
+  @override
+  List<Object?> get props => [lists];
+}
