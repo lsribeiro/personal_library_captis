@@ -8,4 +8,12 @@ class HomeState extends Equatable {
 
   @override
   List<Object?> get props => [lists];
+
+  HomeState copyWith({
+    List<ComicList>? lists,
+  }) {
+    return HomeState(
+      lists: lists ?? this.lists,
+    );
+  }
 }
