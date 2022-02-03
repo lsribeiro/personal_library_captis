@@ -32,8 +32,43 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).restorablePush(_dialogBuilder);
+        },
+        child: Icon(Icons.add),
+      ),
       bottomNavigationBar: BottomNavigationWidget(
         currentIndex: _selectedIndex,
+      ),
+    );
+  }
+
+  static Route<Object?> _dialogBuilder(BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) => SimpleDialog(
+        title: Text("Create your comic list"),
+        children: [
+          TextField(
+            decoration: InputDecoration(hintText: "Comic list name"),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              MaterialButton(
+                onPressed: () => print("Cancel"),
+                child: Text("Cancel", style: TextStyle(color: Colors.white),),
+                color: Colors.grey,
+              ),
+              MaterialButton(
+                onPressed: () => print("Create"),
+                child: Text("Create", style: TextStyle(color: Colors.white),),
+                color: Colors.grey,
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
