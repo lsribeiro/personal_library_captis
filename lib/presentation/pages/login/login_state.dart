@@ -1,6 +1,19 @@
-part of 'login_bloc.dart';
+part of 'login_cubit.dart';
 
 @immutable
-abstract class LoginState {}
+class LoginState extends Equatable {
+  final GoogleSignInAccount? account;
 
-class LoginInitial extends LoginState {}
+  LoginState({this.account});
+
+  @override
+  List<Object?> get props => [account];
+
+  LoginState copyWith({
+    GoogleSignInAccount? account,
+  }) {
+    return LoginState(
+      account: account ?? this.account,
+    );
+  }
+}

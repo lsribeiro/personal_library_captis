@@ -1,8 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:personal_library_captis/data/data_sources/local/comic_list_data_source.dart';
+import 'package:personal_library_captis/data/data_sources/remote/auth_data_source.dart';
 import 'package:personal_library_captis/data/data_sources/remote/search_data_source.dart';
+import 'package:personal_library_captis/data/repositories/auth_repository_impl.dart';
 import 'package:personal_library_captis/data/repositories/comic_list_repository_impl.dart';
 import 'package:personal_library_captis/data/repositories/search_repository_impl.dart';
+import 'package:personal_library_captis/domain/usecases/auth/get_user_use_case.dart';
+import 'package:personal_library_captis/domain/usecases/auth/sign_in_use_case.dart';
+import 'package:personal_library_captis/domain/usecases/auth/sign_out_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/comcic_list/create_comic_list_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/comcic_list/get_comic_lists_use_case.dart';
 import 'package:personal_library_captis/domain/usecases/search/search_characters_use_case.dart';
@@ -20,6 +25,9 @@ void init() {
   sl.registerLazySingleton(() => SearchCreatorsUseCase(sl()));
   sl.registerLazySingleton(() => GetComicListsUseCase(sl()));
   sl.registerLazySingleton(() => CreateComicListUseCase(sl()));
+  sl.registerLazySingleton(() => GetUserUseCase(sl()));
+  sl.registerLazySingleton(() => SignInUseCase(sl()));
+  sl.registerLazySingleton(() => SignOutUseCase(sl()));
 
   sl.registerLazySingleton<SearchRepositoryImpl>(
     () => SearchRepositoryImpl(sl()),
@@ -29,11 +37,19 @@ void init() {
         () => ComicListRepositoryImpl(sl()),
   );
 
+  sl.registerLazySingleton<AuthRepositoryImpl>(
+        () => AuthRepositoryImpl(sl()),
+  );
+
   sl.registerLazySingleton<SearchDataSource>(
         () => SearchDataSource(),
   );
 
   sl.registerLazySingleton<ComicListDataSource>(
         () => ComicListDataSource(),
+  );
+
+  sl.registerLazySingleton<AuthDataSource>(
+        () => AuthDataSource(),
   );
 }

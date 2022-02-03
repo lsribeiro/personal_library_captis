@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_library_captis/presentation/pages/home/home_page.dart';
+import 'package:personal_library_captis/presentation/pages/login/login_cubit.dart';
 import 'package:personal_library_captis/presentation/widgets/login/login_text_field.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LoginCubit(),
+      child: LoginView(),
+    );
+  }
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginView extends StatefulWidget {
+  const LoginView({Key? key}) : super(key: key);
+
+  @override
+  _LoginViewState createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +34,35 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               LoginTextField(hintText: "Login", icon: Icons.person),
-              SizedBox(height: 10.0,),
-              LoginTextField(hintText: "Password", icon: Icons.lock, obscureText: true,),
-              SizedBox(height: 10.0,),
-              MaterialButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ),
+              SizedBox(
+                height: 10.0,
+              ),
+              LoginTextField(
+                hintText: "Password",
+                icon: Icons.lock,
+                obscureText: true,
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+                return MaterialButton(
+                  onPressed: () async {
+                    await context.read<LoginCubit>().loginUser().then((account) {
+                      print("MATERIAL BUTTON ${state}");
+                      if (account != null)
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                    });
+                  },
+                  child: Text("LOGIN"),
+                  color: Colors.white,
                 );
-              }, child: Text("LOGIN"), color: Colors.white,)
+              }),
             ],
           ),
         ),
