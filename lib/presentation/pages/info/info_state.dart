@@ -1,6 +1,23 @@
-part of 'info_bloc.dart';
+part of 'info_cubit.dart';
 
 @immutable
-abstract class InfoState {}
+class InfoState extends Equatable {
+  final dynamic entity;
+  final List<ComicList>? lists;
 
-class InfoInitial extends InfoState {}
+  InfoState({this.entity, this.lists});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [entity, lists];
+
+  InfoState copyWith({
+    dynamic entity,
+    List<ComicList>? lists,
+  }) {
+    return InfoState(
+      entity: entity ?? this.entity,
+      lists: lists ?? this.lists,
+    );
+  }
+}

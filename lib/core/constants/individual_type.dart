@@ -1,0 +1,4 @@
+enum IndividualType {
+  character,
+  creator,
+}

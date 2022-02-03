@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:personal_library_captis/domain/constants/search_types.dart';
 import 'package:personal_library_captis/domain/entities/comic.dart';
 import 'package:personal_library_captis/domain/entities/individual.dart';
+import 'package:personal_library_captis/presentation/pages/info/info_page.dart';
 import 'package:personal_library_captis/presentation/pages/search/search_cubit.dart';
 import 'package:personal_library_captis/presentation/widgets/bottom_navigation/bottom_navigation_widget.dart';
 
@@ -98,29 +99,46 @@ class _SearchViewState extends State<SearchView> {
     );
   }
 
+  void navigateToInfoPage(dynamic entity) {
+    print("navigateToInfoPage");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => InfoPage(
+          entity: entity,
+        ),
+      ),
+    );
+  }
+
   Widget comicCard(Comic comic) {
     final thumbnail = comic.thumbnail;
 
-    return Card(
-      child: Column(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                image: thumbnail.isNotEmpty && !thumbnail.contains("image_not_available")
-                    ? DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(comic.thumbnail),
-                      )
-                    : null,
+    return InkWell(
+      onTap: () {
+        navigateToInfoPage(comic);
+      },
+      child: Card(
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: thumbnail.isNotEmpty && !thumbnail.contains("image_not_available")
+                      ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(comic.thumbnail),
+                        )
+                      : null,
+                ),
               ),
             ),
-          ),
-          Container(
-            height: 50,
-            child: Text(comic.title),
-          )
-        ],
+            Container(
+              height: 50,
+              child: Text(comic.title),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -128,26 +146,31 @@ class _SearchViewState extends State<SearchView> {
   Widget individualCard(Individual individual) {
     final thumbnail = individual.thumbnail ?? "";
 
-    return Card(
-      child: Column(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                image: thumbnail.isNotEmpty && !thumbnail.contains("image_not_available")
-                    ? DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(thumbnail),
-                      )
-                    : null,
+    return InkWell(
+      onTap: () {
+        navigateToInfoPage(individual);
+      },
+      child: Card(
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: thumbnail.isNotEmpty && !thumbnail.contains("image_not_available")
+                      ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(thumbnail),
+                        )
+                      : null,
+                ),
               ),
             ),
-          ),
-          Container(
-            height: 50,
-            child: Text(individual.name),
-          )
-        ],
+            Container(
+              height: 50,
+              child: Text(individual.name),
+            )
+          ],
+        ),
       ),
     );
   }

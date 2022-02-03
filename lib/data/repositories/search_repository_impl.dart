@@ -1,3 +1,4 @@
+import 'package:personal_library_captis/core/constants/individual_type.dart';
 import 'package:personal_library_captis/data/data_sources/remote/search_data_source.dart';
 import 'package:personal_library_captis/domain/entities/comic.dart';
 import 'package:personal_library_captis/domain/entities/individual.dart';
@@ -35,6 +36,7 @@ class SearchRepositoryImpl implements SearchRepository {
     results.forEach((element) {
       final character = Individual.fromMap(element);
       charactersResult.add(character);
+      charactersResult.add(character.copyWith(type: IndividualType.character));
     });
 
     return charactersResult;
@@ -53,8 +55,7 @@ class SearchRepositoryImpl implements SearchRepository {
       final result = element["data"]["results"];
       result.forEach((e) {
         final creator = Individual.fromMap(e);
-        print(creator);
-        creatorsResult.add(creator);
+        creatorsResult.add(creator.copyWith(type: IndividualType.creator));
       });
     });
 
