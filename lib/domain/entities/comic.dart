@@ -1,29 +1,38 @@
+import 'package:hive/hive.dart';
 import 'package:personal_library_captis/domain/entities/comic_list.dart';
 import 'package:personal_library_captis/domain/entities/individual.dart';
 
+part 'comic.g.dart';
+
+@HiveType(typeId: 1)
 class Comic {
+  @HiveField(1)
+  int id;
+  @HiveField(2)
   String thumbnail;
+  @HiveField(3)
   String title;
-  Individual creator;
+  List<Individual>? creators;
   String? description;
-  String isbn;
-  int pageCount;
-  String series;
-  List<Individual> characters;
+  String? isbn;
+  int? pageCount;
+  String? series;
+  List<Individual>? characters;
   List<ComicList>? lists;
   List<String>? imageGallery;
 
 //<editor-fold desc="Data Methods">
 
   Comic({
+    required this.id,
     required this.thumbnail,
     required this.title,
-    required this.creator,
+    this.creators,
     this.description,
-    required this.isbn,
-    required this.pageCount,
-    required this.series,
-    required this.characters,
+    this.isbn,
+    this.pageCount,
+    this.series,
+    this.characters,
     this.lists,
     this.imageGallery,
   });
@@ -33,9 +42,10 @@ class Comic {
       identical(this, other) ||
       (other is Comic &&
           runtimeType == other.runtimeType &&
+          id == other.id &&
           thumbnail == other.thumbnail &&
           title == other.title &&
-          creator == other.creator &&
+          creators == other.creators &&
           description == other.description &&
           isbn == other.isbn &&
           pageCount == other.pageCount &&
@@ -46,9 +56,10 @@ class Comic {
 
   @override
   int get hashCode =>
+      id.hashCode ^
       thumbnail.hashCode ^
       title.hashCode ^
-      creator.hashCode ^
+      creators.hashCode ^
       description.hashCode ^
       isbn.hashCode ^
       pageCount.hashCode ^
@@ -60,9 +71,10 @@ class Comic {
   @override
   String toString() {
     return 'Comic{' +
+        ' id: $id,' +
         ' thumbnail: $thumbnail,' +
         ' title: $title,' +
-        ' creator: $creator,' +
+        ' creator: $creators,' +
         ' description: $description,' +
         ' isbn: $isbn,' +
         ' pageCount: $pageCount,' +
@@ -74,9 +86,10 @@ class Comic {
   }
 
   Comic copyWith({
+    int? id,
     String? thumbnail,
     String? title,
-    Individual? creator,
+    List<Individual>? creators,
     String? description,
     String? isbn,
     int? pageCount,
@@ -86,9 +99,10 @@ class Comic {
     List<String>? imageGallery,
   }) {
     return Comic(
+      id: id ?? this.id,
       thumbnail: thumbnail ?? this.thumbnail,
       title: title ?? this.title,
-      creator: creator ?? this.creator,
+      creators: creators ?? this.creators,
       description: description ?? this.description,
       isbn: isbn ?? this.isbn,
       pageCount: pageCount ?? this.pageCount,
@@ -101,9 +115,10 @@ class Comic {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': this.id,
       'thumbnail': this.thumbnail,
       'title': this.title,
-      'creator': this.creator,
+      'creator': this.creators,
       'description': this.description,
       'isbn': this.isbn,
       'pageCount': this.pageCount,
@@ -116,10 +131,10 @@ class Comic {
 
   factory Comic.fromMap(Map<String, dynamic> map) {
     return Comic(
+      id: map["id"],
       thumbnail: "${map['thumbnail']['path']}.${map['thumbnail']['extension']}",
       title: map['title'] as String,
       // creator: Individual.fromMap(map['creator']),
-      creator: Individual(name: '', thumbnail: '', numberOfComics: 10, quantityOfListsIncluded: 10),
       description: map['description'],
       isbn: map['isbn'] as String,
       pageCount: map['pageCount'] as int,
